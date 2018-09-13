@@ -109,7 +109,7 @@ impl fmt::Debug for Block {
   fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
     writeln!(
       f,
-      " Timestap: {}\n Prev Block Hash: {:?}\n Block Hash: {:?}\n Nonce: {}\n Data: {:?}",
+      " Timestamp: {}\n Prev Block Hash: {:?}\n Block Hash: {:?}\n Nonce: {}\n Data: {:?}",
       self.timestamp,
       as_hex(self.prev_block_hash),
       as_hex(self.block_hash),

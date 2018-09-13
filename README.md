@@ -1,7 +1,7 @@
 
 ## Intro
 
-This repo is largely inspired by [asymmetric's blagh](https://asymmetric.github.io) blogpost [Implementing a Blockchain in Rust](https://asymmetric.github.io/2018/02/11/blockchain-rust/). I started hacking on the code examples, eventually rewriting parts of the codebase. It's a good post, take a look.
+This repo is largely inspired by [asymmetric's blagh](https://asymmetric.github.io) blogpost [Implementing a Blockchain in Rust](https://asymmetric.github.io/2018/02/11/blockchain-rust/). I started hacking on the code snippets, eventually rewriting parts of the codebase. It's a good post, take a look.
 
 ### Running the code
 
@@ -20,7 +20,7 @@ const DIFFICULTY: usize = 6;
 const MAX_NONCE: u64 = 100_000_000;
 ```
 
-A `DIFFICULTY` value effects how many leading zero each hash value is required to have. For a value of 6 this would mean 3 leading zeros, as you can see in the output below. As may be evident already, more iterations are required to find a more _difficult_ hash value, hence, the more iterations the higher value of `MAX_NONCE` required. Using a release build, 100 million iterations doesn't take too long. 
+A `DIFFICULTY` value affects how many leading zero each hash value is required to have. For a value of 6 this would mean 3 leading zeros, as you can see in the output below. As may be evident already, more iterations are required to find a more _difficult_ hash value, hence, the more iterations the higher value of `MAX_NONCE` required. Using a release build, 100 million iterations doesn't take too long. 
 
 ### User Interface
 

@@ -1,0 +1,13 @@
+cargo-features = ["edition"]
+
+[package]
+edition = '2018'
+name = "blockchain"
+version = "0.1.0"
+authors = ["Iain Diamond <iain.diamond@gmail.com>"]
+
+[dependencies]
+chrono = "0.4"
+rust-crypto = "0.2"
+num-bigint = "0.2"
+num-traits = "0.2"

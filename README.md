@@ -20,7 +20,7 @@ const DIFFICULTY: usize = 6;
 const MAX_NONCE: u64 = 100_000_000;
 ```
 
-A `DIFFICULTY` value affects how many leading zero each hash value is required to have. For a value of 6 this would mean 3 leading zeros, as you can see in the output below. As may be evident already, more iterations are required to find a more _difficult_ hash value, hence, the more iterations the higher value of `MAX_NONCE` required. Using a release build, 100 million iterations doesn't take too long. 
+A `DIFFICULTY` value affects how many leading zero each hash value is required to have. For a value of 6 this would mean 3 leading zeros, as you can see in the output below. As may be evident already, more iterations are required to find a more _difficult_ hash value, hence, the more iterations the higher value of `MAX_PROOF` required. Using a release build, using 100 million iterations, doesn't take too long. 
 
 ### User Interface
 

@@ -5,7 +5,7 @@ This repo is largely inspired by [asymmetric's blagh](https://asymmetric.github.
 
 ### Running the code
 
-This code was built and run using the nightly build, `1.29.0-nightly (af9e40c26 2018-07-05)`, along with the Rust `2018 Edition` options enabled.
+This code was built and run using the nightly build, `rustc 1.30.0-nightly (90d36fb59 2018-09-13)`, along with the Rust `2018 Edition` enabled.
 
 Once you have cloned the repository to a local folder, type:
 

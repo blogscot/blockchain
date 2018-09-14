@@ -1,4 +1,4 @@
-#![allow(dead_code)]
+#![feature(crate_visibility_modifier)]
 
 mod block;
 mod chain;

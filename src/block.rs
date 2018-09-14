@@ -25,13 +25,6 @@ impl Block {
   /// Creates a new block using the previous block's hash value.
   pub fn new(data: &str, prev_block: &Block) -> Result<Self, MiningError> {
     let (prev_block_hash, proof) = prev_block.hash()?;
-    // let new_block = Self {
-    //   timestamp: Utc::now().timestamp(),
-    //   prev_block_hash,
-    //   proof,
-    //   data: data.into(),
-    // };
-    // new_block.hash()?;
     Ok(Self {
       timestamp: Utc::now().timestamp(),
       prev_block_hash,

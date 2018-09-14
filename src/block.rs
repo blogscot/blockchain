@@ -86,7 +86,7 @@ impl Block {
 fn convert_u64_to_u8_array(val: u64) -> [u8; 8] {
   let mut output: [u8; 8] = [0; 8];
   for (index, _) in (0..8).enumerate() {
-    output[index] = (val >> index * 8) as u8;
+    output[index] = (val >> (index * 8)) as u8;
   }
   output
 }

@@ -31,6 +31,6 @@ impl fmt::Display for Blockchain {
     for block in &self.blocks {
       writeln!(f, "{:?}", block).expect("Cannot print for some reason!");
     }
-    writeln!(f, "")
+    writeln!(f)
   }
 }

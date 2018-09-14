@@ -7,21 +7,18 @@ crate struct Blockchain {
 
 impl Blockchain {
   /// Initializes a new blockchain with a genesis block.
-  pub fn new() -> Result<Self, MiningError> {
-    Ok(Self {
-      blocks: vec![Block::genesis()?],
-    })
+  pub fn genesis() -> Self {
+    Self {
+      blocks: vec![Block::genesis()],
+    }
   }
 
-  /// Adds a newly-mined block to the chain.
-  /// Adding a block to an empty blockchain is an error: a genesis
-  /// block needs to be created first.
+  /// Adds a new block to the chain.
   pub fn add_block(&mut self, data: &str) -> Result<(), MiningError> {
-    let block = match self.blocks.last() {
-      Some(prev_block) => Block::new(data, prev_block)?,
-      None => return Err(MiningError::NoParent),
-    };
-    self.blocks.push(block);
+    if let Some(prev_block) = self.blocks.last() {
+      let new_block = Block::new(data, prev_block)?;
+      self.blocks.push(new_block);
+    }
     Ok(())
   }
 }

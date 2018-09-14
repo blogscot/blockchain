@@ -26,11 +26,11 @@ A `DIFFICULTY` value affects how many leading zero each hash value is required t
 
 ```rust
 fn run() -> Result<(), block::MiningError> {
-  let mut chain = chain::Blockchain::new()?;
-  chain.add_block("This is the first real block")?;
-  chain.add_block("And this is the next one")?;
-  println!("{}", chain);
-  Ok(())
+    let mut chain = Blockchain::genesis();
+    chain.add_block("This is the first real block")?;
+    chain.add_block("And this is the next one")?;
+    println!("{}", chain);
+    Ok(())
 }
 ```
 

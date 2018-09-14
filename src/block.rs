@@ -35,13 +35,13 @@ impl Block {
 
   /// Creates a genesis block (i.e. a block with no parent)
   /// with the previous block's hash field set to all zeroes.
-  pub fn genesis() -> Result<Self, MiningError> {
-    Ok(Self {
+  pub fn genesis() -> Self {
+    Self {
       timestamp: Utc::now().timestamp(),
       prev_block_hash: Sha256Hash::default(),
       proof: 0,
       data: "Genesis block".into(),
-    })
+    }
   }
 
   /// Calculates the current blocks hash value.
@@ -56,29 +56,24 @@ impl Block {
         return Ok((hash, proof));
       }
     }
-    Err(MiningError::Iteration)
+    Err(MiningError::IterationError)
   }
 
   /// Calculates the current block's hash value using a nonce value.
   fn calculate_hash(&self, nonce: u64) -> Sha256Hash {
-    let mut headers = self.headers();
+    let mut vec = Vec::new();
     let mut hasher = Sha256::new();
     let mut hash = Sha256Hash::default();
 
-    headers.extend_from_slice(&convert_u64_to_u8_array(nonce));
-    hasher.input(&headers);
-    hasher.result(&mut hash);
-    hash
-  }
-
-  /// Collects the blocks header values (i.e. timestamp, and the
-  /// previous blocks hash value) into a byte vector.
-  fn headers(&self) -> Vec<u8> {
-    let mut vec = Vec::new();
-
+    // Convert Block into byte vector
     vec.extend(&convert_u64_to_u8_array(self.timestamp as u64));
     vec.extend_from_slice(&self.prev_block_hash);
-    vec
+    vec.extend_from_slice(&convert_u64_to_u8_array(nonce));
+    vec.extend(&self.data);
+
+    hasher.input(&vec);
+    hasher.result(&mut hash);
+    hash
   }
 }
 
@@ -115,15 +110,13 @@ impl fmt::Debug for Block {
 
 #[derive(Debug)]
 crate enum MiningError {
-  Iteration,
-  NoParent,
+  IterationError,
 }
 
 impl fmt::Display for MiningError {
   fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
     match *self {
-      MiningError::Iteration => write!(f, "Could not mine block, hit iteration limit"),
-      MiningError::NoParent => write!(f, "Block has no parent"),
+      MiningError::IterationError => write!(f, "Could not mine block, hit iteration limit"),
     }
   }
 }

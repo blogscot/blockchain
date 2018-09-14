@@ -3,10 +3,11 @@
 mod block;
 mod chain;
 
+use crate::chain::Blockchain;
 use std::process;
 
 fn main() {
-    println!("Rusty Mining Operations are now open for business!");
+    println!("Rusty Mining Operations are now open for business!\n");
 
     run().unwrap_or_else(|e| {
         println!("Error: {}", e);
@@ -15,7 +16,7 @@ fn main() {
 }
 
 fn run() -> Result<(), block::MiningError> {
-    let mut chain = chain::Blockchain::new()?;
+    let mut chain = Blockchain::genesis();
     println!("{}", chain);
     chain.add_block("This is the first real block")?;
     println!("{}", chain);

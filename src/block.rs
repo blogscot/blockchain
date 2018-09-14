@@ -2,20 +2,20 @@ use chrono::prelude::*;
 use crypto::{digest::Digest, sha2::Sha256};
 use num_bigint::BigUint;
 use num_traits::One;
-use std::{fmt, str};
+use std::{fmt, str, u64};
 
 const DIFFICULTY: usize = 6;
-const MAX_NONCE: u64 = 100_000_000;
+const MAX_PROOF: u64 = u64::MAX;
 const HASH_BYTE_SIZE: usize = 32;
 
 type Sha256Hash = [u8; HASH_BYTE_SIZE];
 
+#[derive(Clone)]
 crate struct Block {
   // Headers
   timestamp: i64,
   prev_block_hash: Sha256Hash,
-  pub block_hash: Sha256Hash,
-  nonce: u64,
+  proof: u64,
 
   // Body
   data: Vec<u8>,
@@ -23,37 +23,44 @@ crate struct Block {
 
 impl Block {
   /// Creates a new block using the previous block's hash value.
-  pub fn new(data: &str, prev_hash: Sha256Hash) -> Result<Self, MiningError> {
-    let mut new_block = Self {
+  pub fn new(data: &str, prev_block: &Block) -> Result<Self, MiningError> {
+    let (prev_block_hash, proof) = prev_block.hash()?;
+    // let new_block = Self {
+    //   timestamp: Utc::now().timestamp(),
+    //   prev_block_hash,
+    //   proof,
+    //   data: data.into(),
+    // };
+    // new_block.hash()?;
+    Ok(Self {
       timestamp: Utc::now().timestamp(),
-      prev_block_hash: prev_hash,
-      block_hash: Sha256Hash::default(),
-      nonce: 0,
+      prev_block_hash,
+      proof,
       data: data.into(),
-    };
-
-    new_block.set_hash()?;
-    Ok(new_block)
+    })
   }
 
   /// Creates a genesis block (i.e. a block with no parent)
   /// with the previous block's hash field set to all zeroes.
   pub fn genesis() -> Result<Self, MiningError> {
-    Self::new("Genesis block", Sha256Hash::default())
+    Ok(Self {
+      timestamp: Utc::now().timestamp(),
+      prev_block_hash: Sha256Hash::default(),
+      proof: 0,
+      data: "Genesis block".into(),
+    })
   }
 
-  /// Sets the current blocks hash value.
-  fn set_hash(&mut self) -> Result<(), MiningError> {
+  /// Calculates the current blocks hash value.
+  fn hash(&self) -> Result<(Sha256Hash, u64), MiningError> {
     let target = BigUint::one() << (256 - 4 * DIFFICULTY);
 
-    for nonce in 0..MAX_NONCE {
-      let hash = self.calculate_hash(nonce);
+    for proof in 0..MAX_PROOF {
+      let hash = self.calculate_hash(proof);
       let hash_int = BigUint::from_bytes_be(&hash);
 
       if hash_int < target {
-        self.block_hash = hash;
-        self.nonce = nonce;
-        return Ok(());
+        return Ok((hash, proof));
       }
     }
     Err(MiningError::Iteration)
@@ -104,11 +111,10 @@ impl fmt::Debug for Block {
   fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
     writeln!(
       f,
-      " Timestamp: {}\n Prev Block Hash: {:?}\n Block Hash: {:?}\n Nonce: {}\n Data: {:?}",
+      " Timestamp: {}\n Prev Block Hash: {:?}\n Proof: {}\n Data: {:?}",
       self.timestamp,
       as_hex(self.prev_block_hash),
-      as_hex(self.block_hash),
-      self.nonce,
+      self.proof,
       str::from_utf8(&self.data)
     )
   }

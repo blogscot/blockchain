@@ -18,7 +18,7 @@ impl Blockchain {
   /// block needs to be created first.
   pub fn add_block(&mut self, data: &str) -> Result<(), MiningError> {
     let block = match self.blocks.last() {
-      Some(prev) => Block::new(data, prev.block_hash)?,
+      Some(prev_block) => Block::new(data, prev_block)?,
       None => return Err(MiningError::NoParent),
     };
     self.blocks.push(block);

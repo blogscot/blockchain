@@ -84,16 +84,11 @@ impl Block {
 
 /// Transforms a u64 integer into a little endian u8 array.
 fn convert_u64_to_u8_array(val: u64) -> [u8; 8] {
-  [
-    val as u8,
-    (val >> 8) as u8,
-    (val >> 16) as u8,
-    (val >> 24) as u8,
-    (val >> 32) as u8,
-    (val >> 40) as u8,
-    (val >> 48) as u8,
-    (val >> 56) as u8,
-  ]
+  let mut output: [u8; 8] = [0; 8];
+  for (index, _) in (0..8).enumerate() {
+    output[index] = (val >> index * 8) as u8;
+  }
+  output
 }
 
 /// Converts a hash value into a string.

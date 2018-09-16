@@ -17,10 +17,14 @@ The code ran successfully with maximum values of:
 
 ```rust
 const DIFFICULTY: usize = 6;
-const MAX_NONCE: u64 = 100_000_000;
+const MAX_PROOF: u64 = u64::MAX;
 ```
 
-A `DIFFICULTY` value affects how many leading zero each hash value is required to have. For a value of 6 this would mean 3 leading zeros, as you can see in the output below. As may be evident already, more iterations are required to find a more _difficult_ hash value, hence, the more iterations the higher value of `MAX_PROOF` required. Using a release build, using 100 million iterations, doesn't take too long. 
+A `DIFFICULTY` value affects how many leading zeroes each hash value is required to have. For example, using a value of 6 would provide 3 leading zeros, as we can see in the output below. 
+
+As may be evident already, the higher the `DIFFICULTY` value the greater the number of iterations required to find a suitable hash value. The number of iterations is represented by the `Proof` value shown in the output below. Note, this value is used as a [nonce](https://en.wikipedia.org/wiki/Cryptographic_nonce) value during calculation of the previous block's hash value.
+
+Using a release build, mining a new block with a `DIFFICULTY` value of 6 typically takes in the order of 5-20 seconds to complete.
 
 ### User Interface
 
@@ -36,7 +40,7 @@ fn run() -> Result<(), block::MiningError> {
 
 ### Output Log
 
-The output log below shows an example blockchain containing three blocks: the initial `genesis` block is a special block (containing solely dummy data) which has the sole purpose of starting a new chain. Each of the subsequent blocks contains a hashed value of previous block (providing a continuous encrypted link between blocks, hence the name _blockchain_). To find a valid hash value, that is, one that meets the required `DIFFICULTY` level, the `proof` value is iterated until a suitable hash value is found.
+The output log below shows an example blockchain containing three blocks: the initial `genesis` block is a special block (containing solely dummy data) which has the sole purpose of starting a new chain. Each of the subsequent blocks contains a hashed value of previous block, thus, providing a continuous encrypted link between blocks - hence the name _blockchain_. To find a valid hash value, that is, one that meets the required `DIFFICULTY` level, the `proof` value is iterated until a suitable hash value is found.
 
 ```
  Timestamp: 1536930780
@@ -57,4 +61,6 @@ The output log below shows an example blockchain containing three blocks: the in
 
 ## Further Reading
 
-[Blockchain Mining with Rust](https://www.innoq.com/en/blog/blockchain-mining-with-rust/)
++ [Blockchains from Scratch](https://medium.com/mimir-blockchain/the-birds-the-bees-and-the-merkle-trees-ep-0-blockchains-from-scratch-3cedb1e669eb)
+
++ [Blockchain Mining with Rust](https://www.innoq.com/en/blog/blockchain-mining-with-rust/)

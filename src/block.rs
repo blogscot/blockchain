@@ -10,7 +10,6 @@ const HASH_BYTE_SIZE: usize = 32;
 
 type Sha256Hash = [u8; HASH_BYTE_SIZE];
 
-#[derive(Clone)]
 crate struct Block {
   // Headers
   timestamp: i64,
